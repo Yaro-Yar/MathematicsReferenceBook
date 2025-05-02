@@ -1,0 +1,33 @@
+<resources>
+    <!-- Application Strings -->
+    <string name="app_name">Mathematics Reference</string>
+
+    <!-- Navigation & UI -->
+    <string name="favorite">Избранное</string>
+
+    <!-- Search Functionality -->
+    <string name="search_hint">Поиск математических тем</string>
+    <string name="search_description">Поиск по разделам математики</string>
+    <string name="search_settings_description">Настройки поиска по темам</string>
+    <string name="search_results_title">Результаты поиска</string>
+    <string name="no_search_results">Ничего не найдено</string>
+
+    <!-- Theme Settings -->
+    <string name="dark_theme_label">Темная тема</string>
+    <string name="light_theme_label">Светлая тема</string>
+    <string name="theme_preference_title">Тема приложения</string>
+
+    <!-- Topic Categories -->
+    <string name="algebra_category">Алгебра</string>
+    <string name="geometry_category">Геометрия</string>
+    <string name="calculus_category">Математический анализ</string>
+    <string name="statistics_category">Теория вероятностей</string>
+
+    <!-- Common Actions -->
+    <string name="action_save">Сохранить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_share">Поделиться</string>
+
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
+</resources>
