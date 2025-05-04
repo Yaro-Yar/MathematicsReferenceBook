@@ -8,6 +8,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mathematics_reference_book.R;
 import com.example.mathematics_reference_book.models.Topic;
@@ -17,33 +18,33 @@ import java.util.List;
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewHolder> implements Filterable {
     private List<Topic> topics;
     private List<Topic> topicsFull;
-    private final OnItemClickListener listener;
+    private final OnItemClickListener itemClickListener;
     private final OnFavoriteClickListener favoriteClickListener;
-    private final Filter topicsFilter = new TopicsFilter();
 
     public interface OnItemClickListener {
         void onItemClick(Topic topic, int position);
-
-        void onFavoriteClick(int position, boolean isFavorite);
     }
 
     public interface OnFavoriteClickListener {
         void onFavoriteClick(Topic topic, int position, boolean isFavorite);
     }
 
-    public TopicsAdapter(List<Topic> topics,
-                         OnItemClickListener listener,
-                         OnFavoriteClickListener favoriteClickListener) {
-        this.topics = new ArrayList<>(topics);
-        this.topicsFull = new ArrayList<>(topics);
-        this.listener = listener;
-        this.favoriteClickListener = favoriteClickListener;
+    public TopicsAdapter(List<Topic> topics, OnItemClickListener itemListener, OnFavoriteClickListener favoriteListener) {
+        this.topics = topics != null ? new ArrayList<>(topics) : new ArrayList<>();
+        this.topicsFull = new ArrayList<>(this.topics);
+        this.itemClickListener = itemListener;
+        this.favoriteClickListener = favoriteListener;
     }
 
     public void updateTopics(List<Topic> newTopics) {
+        if (newTopics == null) {
+            newTopics = new ArrayList<>();
+        }
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new TopicDiffCallback(this.topics, newTopics));
         this.topics = new ArrayList<>(newTopics);
         this.topicsFull = new ArrayList<>(newTopics);
-        notifyDataSetChanged();
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @NonNull
@@ -57,34 +58,34 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
         Topic topic = topics.get(position);
+        if (topic == null) return;
+
         holder.bind(topic);
 
         holder.favoriteIcon.setOnClickListener(v -> {
             boolean newFavoriteState = !topic.isFavorite();
             topic.setFavorite(newFavoriteState);
-            holder.favoriteIcon.setImageResource(
-                    newFavoriteState ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
-            );
+            notifyItemChanged(position);
             if (favoriteClickListener != null) {
                 favoriteClickListener.onFavoriteClick(topic, position, newFavoriteState);
             }
         });
 
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onItemClick(topic, position);
+            if (itemClickListener != null) {
+                itemClickListener.onItemClick(topic, position);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return topics.size();
+        return topics != null ? topics.size() : 0;
     }
 
     @Override
     public Filter getFilter() {
-        return topicsFilter;
+        return new TopicsFilter();
     }
 
     private class TopicsFilter extends Filter {
@@ -92,14 +93,24 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Topic> filteredList = new ArrayList<>();
 
+            if (topicsFull == null) {
+                topicsFull = new ArrayList<>();
+            }
+
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(topicsFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (Topic topic : topicsFull) {
-                    if (topic.getTitle().toLowerCase().contains(filterPattern) ||
-                            topic.getDescription().toLowerCase().contains(filterPattern) ||
-                            topic.getCategory().toLowerCase().contains(filterPattern)) {
+                    if (topic == null) continue;
+
+                    String title = topic.getTitle() != null ? topic.getTitle().toLowerCase() : "";
+                    String desc = topic.getDescription() != null ? topic.getDescription().toLowerCase() : "";
+                    String category = topic.getCategory() != null ? topic.getCategory().toLowerCase() : "";
+
+                    if (title.contains(filterPattern) ||
+                            desc.contains(filterPattern) ||
+                            category.contains(filterPattern)) {
                         filteredList.add(topic);
                     }
                 }
@@ -107,16 +118,53 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
 
             FilterResults results = new FilterResults();
             results.values = filteredList;
-            results.count = filteredList.size();
             return results;
         }
 
         @Override
         @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence constraint, FilterResults results) {
+            if (results.values == null) return;
+
+            List<Topic> filteredList = (List<Topic>) results.values;
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new TopicDiffCallback(topics, filteredList));
             topics.clear();
-            topics.addAll((List<Topic>) results.values);
-            notifyDataSetChanged();
+            topics.addAll(filteredList);
+            diffResult.dispatchUpdatesTo(TopicsAdapter.this);
+        }
+    }
+
+    static class TopicDiffCallback extends DiffUtil.Callback {
+        private final List<Topic> oldList;
+        private final List<Topic> newList;
+
+        TopicDiffCallback(List<Topic> oldList, List<Topic> newList) {
+            this.oldList = oldList != null ? oldList : new ArrayList<>();
+            this.newList = newList != null ? newList : new ArrayList<>();
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            Topic oldItem = oldList.get(oldItemPosition);
+            Topic newItem = newList.get(newItemPosition);
+            return oldItem != null && newItem != null && oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            Topic oldItem = oldList.get(oldItemPosition);
+            Topic newItem = newList.get(newItemPosition);
+            return oldItem != null && oldItem.equals(newItem);
         }
     }
 
@@ -133,6 +181,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         }
 
         void bind(Topic topic) {
+            if (topic == null) return;
+
             titleTextView.setText(topic.getTitle());
             descTextView.setText(topic.getDescription());
             favoriteIcon.setImageResource(

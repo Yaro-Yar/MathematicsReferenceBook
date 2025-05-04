@@ -10,6 +10,7 @@ public class Topic implements Parcelable {
     public static final int MIN_DIFFICULTY = 1;
     public static final int MAX_DIFFICULTY = 5;
     public static final int DEFAULT_DIFFICULTY = 1;
+    private static final String DEFAULT_STRING = "";
 
     private final int id;
     @NonNull private final String title;
@@ -22,63 +23,73 @@ public class Topic implements Parcelable {
 
     private Topic(Builder builder) {
         this.id = builder.id;
-        this.title = Objects.requireNonNull(builder.title, "Title cannot be null");
-        this.description = Objects.requireNonNull(builder.description, "Description cannot be null");
-        this.formula = Objects.requireNonNull(builder.formula, "Formula cannot be null");
-        this.theory = Objects.requireNonNull(builder.theory, "Theory cannot be null");
-        this.category = Objects.requireNonNull(builder.category, "Category cannot be null");
+        this.title = ensureNotNull(builder.title, "Title");
+        this.description = ensureNotNull(builder.description, "Description");
+        this.formula = ensureNotNull(builder.formula, "Formula");
+        this.theory = ensureNotNull(builder.theory, "Theory");
+        this.category = ensureNotNull(builder.category, "Category");
         this.isFavorite = builder.isFavorite;
         this.difficultyLevel = validateDifficulty(builder.difficultyLevel);
     }
 
     protected Topic(@NonNull Parcel in) {
         this.id = in.readInt();
-        this.title = in.readString();
-        this.description = in.readString();
-        this.formula = in.readString();
-        this.theory = in.readString();
-        this.category = in.readString();
+        this.title = in.readString() != null ? in.readString() : DEFAULT_STRING;
+        this.description = in.readString() != null ? in.readString() : DEFAULT_STRING;
+        this.formula = in.readString() != null ? in.readString() : DEFAULT_STRING;
+        this.theory = in.readString() != null ? in.readString() : DEFAULT_STRING;
+        this.category = in.readString() != null ? in.readString() : DEFAULT_STRING;
         this.isFavorite = in.readByte() != 0;
         this.difficultyLevel = in.readInt();
+    }
+
+    @NonNull
+    private String ensureNotNull(String value, String fieldName) {
+        if (value == null) {
+            throw new IllegalArgumentException(fieldName + " cannot be null");
+        }
+        return value;
     }
 
     private int validateDifficulty(int level) {
         return Math.max(MIN_DIFFICULTY, Math.min(MAX_DIFFICULTY, level));
     }
 
-    // Builder class
     public static class Builder {
         private final int id;
         private final String title;
-        private String description = "";
-        private String formula = "";
-        private String theory = "";
-        private String category = "";
+        private String description = DEFAULT_STRING;
+        private String formula = DEFAULT_STRING;
+        private String theory = DEFAULT_STRING;
+        private String category = DEFAULT_STRING;
         private boolean isFavorite = false;
         private int difficultyLevel = DEFAULT_DIFFICULTY;
 
         public Builder(int id, @NonNull String title) {
+            if (title == null) {
+                throw new IllegalArgumentException("Title cannot be null");
+            }
             this.id = id;
             this.title = title;
         }
 
-        public Builder description(@NonNull String description) {
-            this.description = description;
+        public Builder description(@Nullable String description) {
+            this.description = description != null ? description : DEFAULT_STRING;
             return this;
         }
 
-        public Builder formula(@NonNull String formula) {
-            this.formula = formula;
+        public Builder formula(@Nullable String formula) {
+            this.formula = formula != null ? formula : DEFAULT_STRING;
             return this;
         }
 
-        public Builder theory(@NonNull String theory) {
-            this.theory = theory;
+        public Builder theory(@Nullable String theory) {
+            this.theory = theory != null ? theory : DEFAULT_STRING;
             return this;
         }
 
-        public Builder category(@NonNull String category) {
-            this.category = category;
+        public Builder category(@Nullable String category) {
+            this.category = category != null ? category : DEFAULT_STRING;
             return this;
         }
 
@@ -97,7 +108,6 @@ public class Topic implements Parcelable {
         }
     }
 
-    // Copy constructor for creating modified copies
     public Topic copyWithFavorite(boolean isFavorite) {
         return new Builder(this.id, this.title)
                 .description(this.description)
@@ -129,6 +139,7 @@ public class Topic implements Parcelable {
     @NonNull public String getTheory() { return theory; }
     @NonNull public String getCategory() { return category; }
     public boolean isFavorite() { return isFavorite; }
+    public void setFavorite(boolean favorite) { isFavorite = favorite; }
     public int getDifficultyLevel() { return difficultyLevel; }
 
     @Override
