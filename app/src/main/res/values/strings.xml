@@ -30,4 +30,6 @@
 
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="remove_from_favorites">Удалить из избранного</string>
+
+    <string name="topic_details">Описание темы</string>
 </resources>

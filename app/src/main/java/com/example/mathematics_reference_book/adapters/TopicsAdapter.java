@@ -23,6 +23,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
 
     public interface OnItemClickListener {
         void onItemClick(Topic topic, int position);
+
+        void onFavoriteClick(int position, boolean isFavorite);
     }
 
     public interface OnFavoriteClickListener {

@@ -23,4 +23,5 @@
     <!-- Дополнительные -->
     <color name="error_color">#FF0000</color>
     <color name="success_color">#4CAF50</color>
+
 </resources>

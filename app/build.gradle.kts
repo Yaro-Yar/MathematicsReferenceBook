@@ -6,9 +6,10 @@ android {
     namespace = "com.example.mathematics_reference_book"
     compileSdk = 34
 
+
     defaultConfig {
         applicationId = "com.example.mathematics_reference_book"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

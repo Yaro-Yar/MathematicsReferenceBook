@@ -7,6 +7,10 @@ import androidx.annotation.Nullable;
 import java.util.Objects;
 
 public class Topic implements Parcelable {
+    public static final int MIN_DIFFICULTY = 1;
+    public static final int MAX_DIFFICULTY = 5;
+    public static final int DEFAULT_DIFFICULTY = 1;
+
     private final int id;
     @NonNull private final String title;
     @NonNull private final String description;
@@ -14,19 +18,17 @@ public class Topic implements Parcelable {
     @NonNull private final String theory;
     @NonNull private final String category;
     private boolean isFavorite;
-    private final int difficultyLevel; // 1-5
+    private final int difficultyLevel;
 
-    public Topic(int id, @NonNull String title, @NonNull String description,
-                 @NonNull String formula, @NonNull String theory,
-                 @NonNull String category, boolean isFavorite, int difficultyLevel) {
-        this.id = id;
-        this.title = Objects.requireNonNull(title, "Title cannot be null");
-        this.description = Objects.requireNonNull(description, "Description cannot be null");
-        this.formula = Objects.requireNonNull(formula, "Formula cannot be null");
-        this.theory = Objects.requireNonNull(theory, "Theory cannot be null");
-        this.category = Objects.requireNonNull(category, "Category cannot be null");
-        this.isFavorite = isFavorite;
-        this.difficultyLevel = validateDifficulty(difficultyLevel);
+    private Topic(Builder builder) {
+        this.id = builder.id;
+        this.title = Objects.requireNonNull(builder.title, "Title cannot be null");
+        this.description = Objects.requireNonNull(builder.description, "Description cannot be null");
+        this.formula = Objects.requireNonNull(builder.formula, "Formula cannot be null");
+        this.theory = Objects.requireNonNull(builder.theory, "Theory cannot be null");
+        this.category = Objects.requireNonNull(builder.category, "Category cannot be null");
+        this.isFavorite = builder.isFavorite;
+        this.difficultyLevel = validateDifficulty(builder.difficultyLevel);
     }
 
     protected Topic(@NonNull Parcel in) {
@@ -41,7 +43,70 @@ public class Topic implements Parcelable {
     }
 
     private int validateDifficulty(int level) {
-        return Math.max(1, Math.min(5, level));
+        return Math.max(MIN_DIFFICULTY, Math.min(MAX_DIFFICULTY, level));
+    }
+
+    // Builder class
+    public static class Builder {
+        private final int id;
+        private final String title;
+        private String description = "";
+        private String formula = "";
+        private String theory = "";
+        private String category = "";
+        private boolean isFavorite = false;
+        private int difficultyLevel = DEFAULT_DIFFICULTY;
+
+        public Builder(int id, @NonNull String title) {
+            this.id = id;
+            this.title = title;
+        }
+
+        public Builder description(@NonNull String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder formula(@NonNull String formula) {
+            this.formula = formula;
+            return this;
+        }
+
+        public Builder theory(@NonNull String theory) {
+            this.theory = theory;
+            return this;
+        }
+
+        public Builder category(@NonNull String category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder isFavorite(boolean isFavorite) {
+            this.isFavorite = isFavorite;
+            return this;
+        }
+
+        public Builder difficultyLevel(int difficultyLevel) {
+            this.difficultyLevel = difficultyLevel;
+            return this;
+        }
+
+        public Topic build() {
+            return new Topic(this);
+        }
+    }
+
+    // Copy constructor for creating modified copies
+    public Topic copyWithFavorite(boolean isFavorite) {
+        return new Builder(this.id, this.title)
+                .description(this.description)
+                .formula(this.formula)
+                .theory(this.theory)
+                .category(this.category)
+                .difficultyLevel(this.difficultyLevel)
+                .isFavorite(isFavorite)
+                .build();
     }
 
     public static final Creator<Topic> CREATOR = new Creator<Topic>() {
@@ -56,7 +121,7 @@ public class Topic implements Parcelable {
         }
     };
 
-    // Геттеры
+    // Getters
     public int getId() { return id; }
     @NonNull public String getTitle() { return title; }
     @NonNull public String getDescription() { return description; }
@@ -65,9 +130,6 @@ public class Topic implements Parcelable {
     @NonNull public String getCategory() { return category; }
     public boolean isFavorite() { return isFavorite; }
     public int getDifficultyLevel() { return difficultyLevel; }
-
-    // Сеттеры (только для изменяемых полей)
-    public void setFavorite(boolean favorite) { isFavorite = favorite; }
 
     @Override
     public int describeContents() {

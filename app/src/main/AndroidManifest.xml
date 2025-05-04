@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.yourpackage.mathreference">
+    package="com.example.mathematics_reference_book">
 
     <application
         android:name=".MathApp"
@@ -35,7 +35,7 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.example.mathematics_reference_book.MainActivity" />
         </activity>
 
     </application>
