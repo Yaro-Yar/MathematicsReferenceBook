@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mathematics_reference_book">
 
+    <!-- Permissions moved before application tag -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".MathApp"
         android:allowBackup="true"
@@ -13,14 +17,16 @@
         android:theme="@style/Theme.MathReference"
         tools:targetApi="31">
 
+        <!-- Main Activity with Search -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MathReference.NoActionBar">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
             <meta-data
@@ -28,16 +34,33 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <!-- Topic Detail Activity -->
         <activity
             android:name=".TopicActivity"
             android:exported="false"
             android:label="@string/topic_details"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.MathReference.Topic"
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mathematics_reference_book.MainActivity" />
-        </activity>
+                android:value=".MainActivity" />
+        </application>
 
-    </application>
+        <!-- Removed unused components:
+             - SearchReceiver (was not implemented)
+             - SearchSuggestionsProvider (was not implemented)
+        -->
 
-</manifest>
+        <!-- Theme Settings -->
+        <meta-data
+            android:name="colorPrimary"
+            android:resource="@color/colorPrimary" />
+        <meta-data
+            android:name="colorPrimaryDark"
+            android:resource="@color/colorPrimaryDark" />
+        <meta-data
+            android:name="colorAccent"
+            android:resource="@color/colorAccent" />
+
+    </manifest>

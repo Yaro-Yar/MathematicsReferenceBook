@@ -4,13 +4,13 @@ plugins {
 
 android {
     namespace = "com.example.mathematics_reference_book"
-    compileSdk = 34
+    compileSdk = 35
 
 
     defaultConfig {
         applicationId = "com.example.mathematics_reference_book"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -32,6 +32,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -39,8 +40,15 @@ dependencies {
     implementation(libs.constraintlayout)
 
     // Для поиска - используем современную версию SearchView
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.appcompat:appcompat-resources:1.6.1")
+    implementation(libs.appcompat.v500)
+    implementation(libs.appcompat.resources)
+
+    implementation (libs.appcompat.v7)
+    implementation (libs.design)
+
+    implementation (libs.material.v1130alpha13) // Используйте актуальную версию
+
+    implementation ("androidx.appcompat:appcompat:1.6.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

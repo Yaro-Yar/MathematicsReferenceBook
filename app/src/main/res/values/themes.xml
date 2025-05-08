@@ -1,28 +1,42 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Базовая тема -->
-    <style name="Theme.MathReference" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorOnSecondary">@color/white</item>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base Application Theme -->
+    <style name="Theme.MathReference" parent="Theme.Material3.DayNight">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <!-- Surface colors -->
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/white</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/gray_light</item>
+
+        <!-- Status bar -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="android:navigationBarColor">@color/black</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <!-- Тема без ActionBar для MainActivity -->
-    <style name="Theme.MathReference.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <!-- Стиль для CardView -->
-    <style name="CardViewStyle">
+    <style name="CardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <!-- Для светлой темы -->
+        <item name="cardBackgroundColor" tools:ignore="DuplicateDefinition">@color/white</item>
+        <!-- Для темной темы -->
+        <item name="cardBackgroundColor" tools:ignore="DuplicateDefinition">@color/dark_surface</item>
+        <item name="strokeColor">@color/gray_light</item>
+        <item name="strokeWidth">1dp</item>
         <item name="cardCornerRadius">8dp</item>
         <item name="cardElevation">4dp</item>
-        <item name="cardUseCompatPadding">true</item>
-        <item name="cardPreventCornerOverlap">false</item>
+    </style>
+    <style name="Theme.MathReference.Topic" parent="Theme.MathReference">
+        <item name="android:windowBackground">@color/dark_surface</item>
+        <item name="toolbarStyle">@style/MyToolbarStyle</item>
+    </style>
+    <style name="IconTintTheme">
+        <item name="colorControlNormal">@color/icon_tint</item>
+        <item name="colorControlActivated">@color/icon_tint_dark</item>
     </style>
 </resources>

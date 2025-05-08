@@ -1,6 +1,8 @@
 <resources>
     <!-- Application Strings -->
-    <string name="app_name">Mathematics Reference</string>
+    <string name="app_name">Math God Mode</string>
+
+    <string name="settings">Настройки</string>
 
     <!-- Navigation & UI -->
     <string name="favorite">Избранное</string>
@@ -32,4 +34,22 @@
     <string name="remove_from_favorites">Удалить из избранного</string>
 
     <string name="topic_details">Описание темы</string>
+
+    <!-- Алгебра -->
+    <string name="algebra_title">Алгебра</string>
+    <string name="algebra_description">Раздел математики, изучающий операции и их свойства</string>
+    <string name="algebra_formula">a² - b² = (a - b)(a + b)\nКвадратное уравнение: ax² + bx + c = 0</string>
+    <string name="algebra_theory">Основные темы:\n- Линейные уравнения\n- Квадратные уравнения\n- Многочлены\n- Системы уравнений\n- Матрицы и определители</string>
+
+    <!-- Геометрия -->
+    <string name="geometry_title">Геометрия</string>
+    <string name="geometry_description">Изучение пространственных отношений и фигур</string>
+    <string name="geometry_formula">Площадь круга: S = πr²\nТеорема Пифагора: a² + b² = c²</string>
+    <string name="geometry_theory">Основные разделы:\n- Планиметрия\n- Стереометрия\n- Тригонометрия\n- Аналитическая геометрия\n- Векторная алгебра</string>
+
+    <!-- Тригонометрия -->
+    <string name="trigonometry_title">Тригонометрия</string>
+    <string name="trigonometry_description">Изучение тригонометрических функций и их свойств</string>
+    <string name="trigonometry_formula">Основное тождество: sin²α + cos²α = 1\nФормулы приведения: sin(π/2 - α) = cosα</string>
+    <string name="trigonometry_theory">Ключевые понятия:\n- Тригонометрические функции\n- Тригонометрические уравнения\n- Обратные функции\n- Тригонометрические неравенства\n- Комплексные числа</string>
 </resources>

@@ -24,4 +24,9 @@
     <color name="error_color">#FF0000</color>
     <color name="success_color">#4CAF50</color>
 
+    <!-- Добавьте эти цвета если их нет -->
+    <color name="gray_dark">#424242</color>
+
+    <color name="icon_tint">#6200EE</color> <!-- Фиксированный цвет -->
+    <color name="icon_tint_dark">#BB86FC</color>
 </resources>

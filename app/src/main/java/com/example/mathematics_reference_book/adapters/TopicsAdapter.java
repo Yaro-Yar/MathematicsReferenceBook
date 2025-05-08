@@ -65,7 +65,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         holder.favoriteIcon.setOnClickListener(v -> {
             boolean newFavoriteState = !topic.isFavorite();
             topic.setFavorite(newFavoriteState);
-            notifyItemChanged(position);
+            holder.updateFavoriteIcon(newFavoriteState);
             if (favoriteClickListener != null) {
                 favoriteClickListener.onFavoriteClick(topic, position, newFavoriteState);
             }
@@ -185,12 +185,16 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
 
             titleTextView.setText(topic.getTitle());
             descTextView.setText(topic.getDescription());
+            updateFavoriteIcon(topic.isFavorite());
+        }
+
+        void updateFavoriteIcon(boolean isFavorite) {
             favoriteIcon.setImageResource(
-                    topic.isFavorite() ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
+                    isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
             );
             favoriteIcon.setContentDescription(
                     itemView.getContext().getString(
-                            topic.isFavorite() ? R.string.remove_from_favorites : R.string.add_to_favorites
+                            isFavorite ? R.string.remove_from_favorites : R.string.add_to_favorites
                     )
             );
         }

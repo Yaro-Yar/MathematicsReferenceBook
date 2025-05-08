@@ -3,11 +3,13 @@
     android:label="@string/app_name"
     android:hint="@string/search_hint"
     android:searchSettingsDescription="@string/search_settings_description"
-    android:inputType="textAutoComplete|textAutoCorrect"
-    android:imeOptions="actionSearch">
+    android:inputType="textAutoComplete|textAutoCorrect|textCapSentences"
+    android:imeOptions="actionSearch|flagNoFullscreen"
+    android:searchSuggestAuthority="com.example.mathematics_reference_book.SearchProvider"
+    android:searchSuggestIntentAction="android.intent.action.VIEW">
 
-    <!-- Базовые настройки поиска -->
     <actionkey
         android:keycode="KEYCODE_SEARCH"
-        android:queryActionMsg="search"/>
+        android:queryActionMsg="search"
+        android:suggestActionMsg="go"/>
 </searchable>

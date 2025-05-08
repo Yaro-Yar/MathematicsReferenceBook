@@ -25,12 +25,12 @@ public class MainActivity extends AppCompatActivity implements
         TopicsAdapter.OnItemClickListener,
         TopicsAdapter.OnFavoriteClickListener {
 
+    private static final String TAG = "MainActivity";
     private static final String PREFS_NAME = "app_settings";
     private static final String DARK_MODE_KEY = "dark_mode";
-    private static final String TAG = "MainActivity";
 
     private TopicsAdapter adapter;
-    private List<Topic> allTopics;
+    private List<Topic> allTopics = new ArrayList<>();
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -38,57 +38,48 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeAppSettings();
-        initializeTopics();
+        initSettings();
+        initTopics();
         setupRecyclerView();
         handleSearchIntent(getIntent());
     }
 
-    private void initializeAppSettings() {
-        try {
-            sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-            boolean isDarkMode = sharedPreferences.getBoolean(DARK_MODE_KEY, false);
-            setAppTheme(isDarkMode);
-        } catch (Exception e) {
-            Log.e(TAG, "Error initializing app settings", e);
-        }
-    }
-
-    private void setAppTheme(boolean isDarkMode) {
+    private void initSettings() {
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isDarkMode = sharedPreferences.getBoolean(DARK_MODE_KEY, false);
         AppCompatDelegate.setDefaultNightMode(
                 isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
         );
     }
 
-    private void initializeTopics() {
-        allTopics = new ArrayList<>();
+    private void initTopics() {
         try {
-            allTopics.add(new Topic.Builder(1, "Алгебра")
-                    .description("Основы алгебры, уравнения")
-                    .formula("ax² + bx + c = 0")
-                    .theory("Теория...")
-                    .category("")
+            allTopics.add(new Topic.Builder(1, getString(R.string.algebra_title))
+                    .description(getString(R.string.algebra_description))
+                    .formula(getString(R.string.algebra_formula))
+                    .theory(getString(R.string.algebra_theory))
+                    .category(getString(R.string.algebra_category))
                     .difficultyLevel(3)
                     .build());
 
-            allTopics.add(new Topic.Builder(2, "Геометрия")
-                    .description("Фигуры, площади, объемы")
-                    .formula("S = πr²")
-                    .theory("Теория...")
-                    .category("")
+            allTopics.add(new Topic.Builder(2, getString(R.string.geometry_title))
+                    .description(getString(R.string.geometry_description))
+                    .formula(getString(R.string.geometry_formula))
+                    .theory(getString(R.string.geometry_theory))
+                    .category(getString(R.string.geometry_category))
                     .isFavorite(true)
                     .difficultyLevel(2)
                     .build());
 
-            allTopics.add(new Topic.Builder(3, "Тригонометрия")
-                    .description("Синусы, косинусы")
-                    .formula("sin²α + cos²α = 1")
-                    .theory("Теория...")
-                    .category("")
+            allTopics.add(new Topic.Builder(3, getString(R.string.trigonometry_title))
+                    .description(getString(R.string.trigonometry_description))
+                    .formula(getString(R.string.trigonometry_formula))
+                    .theory(getString(R.string.trigonometry_theory))
                     .difficultyLevel(4)
                     .build());
         } catch (Exception e) {
-            Log.e(TAG, "Error initializing topics", e);
+            Log.e(TAG, "Topic initialization failed", e);
+            Toast.makeText(this, "Error loading topics", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -111,13 +102,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void handleSearchIntent(Intent intent) {
-        if (intent == null || adapter == null) return;
-
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            if (query != null) {
-                adapter.getFilter().filter(query);
-            }
+            filterTopics(query);
         }
     }
 
@@ -125,17 +112,15 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         setupSearchView(menu);
-        setupThemeToggle(menu);
+        updateThemeMenuItem(menu);
         return true;
     }
 
     private void setupSearchView(Menu menu) {
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        if (searchItem == null) return;
-
         SearchView searchView = (SearchView) searchItem.getActionView();
-        if (searchView == null) return;
 
+        // Настройка поиска
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         if (searchManager != null) {
             ComponentName componentName = new ComponentName(this, MainActivity.class);
@@ -145,25 +130,34 @@ public class MainActivity extends AppCompatActivity implements
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                filterTopics(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (adapter != null) {
-                    adapter.getFilter().filter(newText);
-                }
+                filterTopics(newText);
                 return true;
             }
         });
     }
 
-    private void setupThemeToggle(Menu menu) {
-        MenuItem themeItem = menu.findItem(R.id.action_theme);
-        if (themeItem == null) return;
+    private void filterTopics(String query) {
+        if (adapter == null) return;
 
-        boolean isDarkMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
-        themeItem.setTitle(isDarkMode ? R.string.light_theme_label : R.string.dark_theme_label);
+        if (query == null || query.isEmpty()) {
+            adapter.updateTopics(new ArrayList<>(allTopics));
+        } else {
+            adapter.getFilter().filter(query.toLowerCase().trim());
+        }
+    }
+
+    private void updateThemeMenuItem(Menu menu) {
+        MenuItem themeItem = menu.findItem(R.id.action_theme);
+        if (themeItem != null) {
+            boolean isDark = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+            themeItem.setTitle(isDark ? R.string.light_theme_label : R.string.dark_theme_label);
+        }
     }
 
     @Override
@@ -180,40 +174,34 @@ public class MainActivity extends AppCompatActivity implements
         AppCompatDelegate.setDefaultNightMode(
                 isDarkMode ? AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES);
 
-        if (sharedPreferences != null) {
-            sharedPreferences.edit()
-                    .putBoolean(DARK_MODE_KEY, !isDarkMode)
-                    .apply();
-        }
+        sharedPreferences.edit()
+                .putBoolean(DARK_MODE_KEY, !isDarkMode)
+                .apply();
 
-        recreate();
+        invalidateOptionsMenu(); // Обновляем меню
     }
 
     @Override
     public void onItemClick(Topic topic, int position) {
-        if (topic == null) return;
-
-        try {
-            startActivity(TopicActivity.newIntent(this, topic));
-        } catch (Exception e) {
-            Log.e(TAG, "Error starting TopicActivity", e);
-            Toast.makeText(this, "Error opening topic", Toast.LENGTH_SHORT).show();
+        if (topic == null) {
+            Log.w(TAG, "Clicked null topic at position: " + position);
+            return;
         }
+        startActivity(TopicActivity.newIntent(this, topic));
     }
 
     @Override
     public void onFavoriteClick(Topic topic, int position, boolean isFavorite) {
-        if (topic == null || adapter == null) return;
+        if (topic == null) return;
 
         topic.setFavorite(isFavorite);
-        adapter.notifyItemChanged(position);
-        showFavoriteToast(isFavorite);
-    }
+        Toast.makeText(this,
+                isFavorite ? R.string.add_to_favorites : R.string.remove_from_favorites,
+                Toast.LENGTH_SHORT).show();
 
-    private void showFavoriteToast(boolean isFavorite) {
-        String message = isFavorite ?
-                getString(R.string.add_to_favorites) :
-                getString(R.string.remove_from_favorites);
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        // Обновляем данные (если используете БД или ViewModel)
+        if (adapter != null) {
+            adapter.notifyItemChanged(position);
+        }
     }
 }

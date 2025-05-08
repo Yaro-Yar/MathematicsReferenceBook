@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,9 @@
     android:layout_margin="8dp"
     style="@style/CardViewStyle"
     app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    app:strokeColor="@color/gray_light"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +18,7 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
+        <!-- Контент темы -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,9 +29,8 @@
                 android:id="@+id/topicTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 tools:text="Название темы" />
 
             <TextView
@@ -36,18 +38,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="14sp"
                 tools:text="Описание темы" />
         </LinearLayout>
 
-        <ImageView
+        <!-- Иконка избранного -->
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/favoriteIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/favorite"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:srcCompat="@drawable/ic_favorite_border"
             app:tint="?attr/colorPrimary" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

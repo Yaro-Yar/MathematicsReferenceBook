@@ -13,8 +13,9 @@
         android:id="@+id/action_theme"
         android:title="@string/dark_theme_label"
         app:showAsAction="never"/>
+
     <item
-        android:id="@+id/action_themeе"
-        android:title="@string/light_theme_label"
+        android:id="@+id/action_settings"
+        android:title="@string/settings"
         app:showAsAction="never"/>
 </menu>
