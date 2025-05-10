@@ -3,16 +3,15 @@ package com.example.mathematics_reference_book;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.text.HtmlCompat;
-
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import com.example.mathematics_reference_book.models.Topic;
 
 public class TopicActivity extends AppCompatActivity {
@@ -52,26 +51,12 @@ public class TopicActivity extends AppCompatActivity {
 
         titleView.setText(currentTopic.getTitle());
         formulaView.setText(currentTopic.getFormula());
-        setHtmlContentIfNeeded(theoryView, currentTopic.getTheory());
-    }
 
-    private void setHtmlContentIfNeeded(TextView textView, String content) {
-        if (content.contains("<") && content.contains(">")) {
-            textView.setText(HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_LEGACY));
-        } else {
-            textView.setText(content);
-        }
-    }
-    private void initializeViews() {
-        // Get references to views
-        TextView titleView = findViewById(R.id.topicDetailTitle);
-        TextView formulaView = findViewById(R.id.topicFormula);
-        TextView theoryView = findViewById(R.id.topicTheory);
-
-        // Set text content
-        titleView.setText(currentTopic.getTitle());
-        formulaView.setText(currentTopic.getFormula());
-        theoryView.setText(currentTopic.getTheory());
+        // Updated HtmlCompat usage
+        theoryView.setText(HtmlCompat.fromHtml(
+                currentTopic.getTheory(),
+                HtmlCompat.FROM_HTML_MODE_COMPACT
+        ));
 
         // Set text direction if needed
         titleView.setTextDirection(View.TEXT_DIRECTION_LOCALE);

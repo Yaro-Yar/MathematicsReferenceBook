@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Кастомные атрибуты для цветов -->
+    <attr name="customTextColor" format="reference|color" />
+    <attr name="customFixedColor" format="reference|color" />
+    <attr name="cardBackgroundColor" format="reference|color" />
+</resources>

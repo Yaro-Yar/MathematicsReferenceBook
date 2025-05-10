@@ -35,6 +35,7 @@
         <activity
             android:name=".TopicActivity"
             android:exported="false"
+            android:theme="@style/Theme.MathReference"
             android:label="@string/topic_details"
             android:parentActivityName=".MainActivity" />
 

@@ -14,14 +14,13 @@
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <!-- Контент темы -->
+        <!-- Content layout -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,7 +31,7 @@
                 android:id="@+id/topicTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="?android:attr/textColorPrimary"
                 tools:text="Название темы" />
 
@@ -41,12 +40,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="Описание темы" />
         </LinearLayout>
 
-        <!-- Иконка избранного -->
+        <!-- Favorite icon -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/favoriteIcon"
             android:layout_width="24dp"
@@ -57,6 +56,5 @@
             app:shapeAppearanceOverlay="@style/CircleImageView"
             app:srcCompat="@drawable/ic_favorite_border"
             app:tint="?attr/colorPrimary" />
-
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

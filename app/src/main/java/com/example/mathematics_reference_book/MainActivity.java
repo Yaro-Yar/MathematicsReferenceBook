@@ -54,29 +54,84 @@ public class MainActivity extends AppCompatActivity implements
 
     private void initTopics() {
         try {
-            allTopics.add(new Topic.Builder(1, getString(R.string.algebra_title))
-                    .description(getString(R.string.algebra_description))
-                    .formula(getString(R.string.algebra_formula))
-                    .theory(getString(R.string.algebra_theory))
-                    .category(getString(R.string.algebra_category))
+            allTopics.add(new Topic.Builder(5, "Теория вероятностей")
+                    .description("Раздел математики, изучающий случайные события и их вероятности.")
+                    .formula("Основная формула вероятности: P(A) = n(A)/n(S)\n" +
+                            "Формула полной вероятности: P(A) = Σ[P(A|Bᵢ)*P(Bᵢ)]\n" +
+                            "Формула Байеса: P(A|B) = [P(B|A)*P(A)]/P(B)\n" +
+                            "Математическое ожидание: E[X] = Σxᵢ*pᵢ")
+                    .theory("Теория вероятностей - математическая дисциплина, которая:\n" +
+                            "1. Изучает закономерности случайных явлений\n" +
+                            "2. Позволяет количественно оценивать вероятность событий\n" +
+                            "3. Широко применяется в статистике, физике, экономике и других науках\n\n" +
+                            "Основные понятия:\n" +
+                            "- Случайное событие\n" +
+                            "- Вероятность (от 0 до 1)\n" +
+                            "- Случайная величина\n" +
+                            "- Распределение вероятностей")
+                    .category("Математика")
                     .difficultyLevel(3)
                     .build());
-
-            allTopics.add(new Topic.Builder(2, getString(R.string.geometry_title))
-                    .description(getString(R.string.geometry_description))
-                    .formula(getString(R.string.geometry_formula))
-                    .theory(getString(R.string.geometry_theory))
-                    .category(getString(R.string.geometry_category))
-                    .isFavorite(true)
+            allTopics.add(new Topic.Builder(1, "Алгебра")
+                    .description("Раздел математики, изучающий общие свойства операций и отношений.")
+                    .formula("Квадратное уравнение: ax² + bx + c = 0\n" +
+                            "Дискриминант: D = b² - 4ac\n" +
+                            "Корни: x = (-b ± √D)/2a\n\n" +
+                            "Свойства логарифмов:\n" +
+                            "logₐ(xy) = logₐx + logₐy\n" +
+                            "logₐ(x/y) = logₐx - logₐy\n" +
+                            "logₐ(xᵇ) = b*logₐx")
+                    .theory("Алгебра включает:\n" +
+                            "1. Решение уравнений\n" +
+                            "2. Работу с многочленами\n" +
+                            "3. Изучение алгебраических структур\n\n" +
+                            "Основные темы:\n" +
+                            "- Линейная алгебра\n" +
+                            "- Абстрактная алгебра\n" +
+                            "- Алгебраическая геометрия")
+                    .category("Математика")
+                    .difficultyLevel(3)
+                    .build());
+            allTopics.add(new Topic.Builder(2, "Геометрия")
+                    .description("Раздел математики, изучающий пространственные отношения и формы.")
+                    .formula("Планиметрия:\n" +
+                            "Площадь круга: S = πr²\n" +
+                            "Теорема Пифагора: a² + b² = c²\n\n" +
+                            "Стереометрия:\n" +
+                            "Объем шара: V = (4/3)πr³\n" +
+                            "Площадь сферы: S = 4πr²")
+                    .theory("Основные разделы геометрии:\n" +
+                            "1. Планиметрия (2D)\n" +
+                            "2. Стереометрия (3D)\n" +
+                            "3. Аналитическая геометрия\n\n" +
+                            "Важные понятия:\n" +
+                            "- Точки, линии, плоскости\n" +
+                            "- Углы и расстояния\n" +
+                            "- Геометрические преобразования")
+                    .category("Математика")
                     .difficultyLevel(2)
                     .build());
-
-            allTopics.add(new Topic.Builder(3, getString(R.string.trigonometry_title))
-                    .description(getString(R.string.trigonometry_description))
-                    .formula(getString(R.string.trigonometry_formula))
-                    .theory(getString(R.string.trigonometry_theory))
+            allTopics.add(new Topic.Builder(3, "Математический анализ")
+                    .description("Раздел математики, изучающий функции, пределы, производные и интегралы.")
+                    .formula("Производные:\n" +
+                            "(xⁿ)' = nxⁿ⁻¹\n" +
+                            "(sin x)' = cos x\n" +
+                            "(eˣ)' = eˣ\n\n" +
+                            "Интегралы:\n" +
+                            "∫xⁿdx = xⁿ⁺¹/(n+1) + C (n ≠ -1)\n" +
+                            "∫(1/x)dx = ln|x| + C")
+                    .theory("Основные понятия анализа:\n" +
+                            "1. Пределы и непрерывность\n" +
+                            "2. Дифференциальное исчисление\n" +
+                            "3. Интегральное исчисление\n\n" +
+                            "Приложения:\n" +
+                            "- Оптимизация\n" +
+                            "- Физические модели\n" +
+                            "- Экономические расчеты")
+                    .category("Высшая математика")
                     .difficultyLevel(4)
                     .build());
+
         } catch (Exception e) {
             Log.e(TAG, "Topic initialization failed", e);
             Toast.makeText(this, "Error loading topics", Toast.LENGTH_SHORT).show();
