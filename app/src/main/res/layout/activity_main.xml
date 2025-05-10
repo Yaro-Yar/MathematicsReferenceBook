@@ -7,20 +7,14 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:title="@string/app_name"
-        app:titleTextColor="@color/white"
-        app:navigationIcon="@drawable/ic_menu"
-        app:menu="@menu/main_menu"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/topicsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:importantForAccessibility="yes"
+        android:contentDescription="@string/topics_list_description"
+        tools:listitem="@layout/item_topic" />
 </LinearLayout>

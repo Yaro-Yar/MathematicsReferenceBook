@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String DARK_MODE_KEY = "dark_mode";
 
     private TopicsAdapter adapter;
-    private List<Topic> allTopics = new ArrayList<>();
+    private final List<Topic> allTopics = new ArrayList<>();
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -124,9 +124,11 @@ public class MainActivity extends AppCompatActivity implements
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         if (searchManager != null) {
             ComponentName componentName = new ComponentName(this, MainActivity.class);
+            assert searchView != null;
             searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
         }
 
+        assert searchView != null;
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -187,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements
             Log.w(TAG, "Clicked null topic at position: " + position);
             return;
         }
-        startActivity(TopicActivity.newIntent(this, topic));
+        startActivity(TopicActivity.newIntent(MainActivity.this, topic));
     }
 
     @Override

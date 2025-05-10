@@ -21,12 +21,11 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+
     <style name="CardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
-        <!-- Для светлой темы -->
-        <item name="cardBackgroundColor" tools:ignore="DuplicateDefinition">@color/white</item>
-        <!-- Для темной темы -->
-        <item name="cardBackgroundColor" tools:ignore="DuplicateDefinition">@color/dark_surface</item>
-        <item name="strokeColor">@color/gray_light</item>
+        <!-- Use theme attributes instead of fixed colors -->
+        <item name="cardBackgroundColor">?attr/colorSurfaceVariant</item>
+        <item name="strokeColor">?attr/colorOutline</item>
         <item name="strokeWidth">1dp</item>
         <item name="cardCornerRadius">8dp</item>
         <item name="cardElevation">4dp</item>
@@ -38,5 +37,15 @@
     <style name="IconTintTheme">
         <item name="colorControlNormal">@color/icon_tint</item>
         <item name="colorControlActivated">@color/icon_tint_dark</item>
+    </style>
+    <style name="CircleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="MyToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 </resources>

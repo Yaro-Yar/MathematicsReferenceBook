@@ -104,7 +104,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
                 for (Topic topic : topicsFull) {
                     if (topic == null) continue;
 
-                    String title = topic.getTitle() != null ? topic.getTitle().toLowerCase() : "";
+                    String title = String.valueOf(topic.getTitle());
                     String desc = topic.getDescription() != null ? topic.getDescription().toLowerCase() : "";
                     String category = topic.getCategory() != null ? topic.getCategory().toLowerCase() : "";
 

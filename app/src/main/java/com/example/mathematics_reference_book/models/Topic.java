@@ -34,11 +34,11 @@ public class Topic implements Parcelable {
 
     protected Topic(@NonNull Parcel in) {
         this.id = in.readInt();
-        this.title = in.readString() != null ? in.readString() : DEFAULT_STRING;
-        this.description = in.readString() != null ? in.readString() : DEFAULT_STRING;
-        this.formula = in.readString() != null ? in.readString() : DEFAULT_STRING;
-        this.theory = in.readString() != null ? in.readString() : DEFAULT_STRING;
-        this.category = in.readString() != null ? in.readString() : DEFAULT_STRING;
+        this.title = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.description = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.formula = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.theory = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.category = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
         this.isFavorite = in.readByte() != 0;
         this.difficultyLevel = in.readInt();
     }
@@ -66,9 +66,6 @@ public class Topic implements Parcelable {
         private int difficultyLevel = DEFAULT_DIFFICULTY;
 
         public Builder(int id, @NonNull String title) {
-            if (title == null) {
-                throw new IllegalArgumentException("Title cannot be null");
-            }
             this.id = id;
             this.title = title;
         }
@@ -119,7 +116,7 @@ public class Topic implements Parcelable {
                 .build();
     }
 
-    public static final Creator<Topic> CREATOR = new Creator<Topic>() {
+    public static final Creator<Topic> CREATOR = new Creator<>() {
         @Override
         public Topic createFromParcel(Parcel in) {
             return new Topic(in);
@@ -133,10 +130,15 @@ public class Topic implements Parcelable {
 
     // Getters
     public int getId() { return id; }
-    @NonNull public String getTitle() { return title; }
     @NonNull public String getDescription() { return description; }
-    @NonNull public String getFormula() { return formula; }
-    @NonNull public String getTheory() { return theory; }
+    @NonNull
+    public String getTitle() { return title; }
+
+    @NonNull
+    public String getFormula() { return formula; }
+
+    @NonNull
+    public String getTheory() { return theory; }
     @NonNull public String getCategory() { return category; }
     public boolean isFavorite() { return isFavorite; }
     public void setFavorite(boolean favorite) { isFavorite = favorite; }

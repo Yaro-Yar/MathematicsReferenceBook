@@ -52,4 +52,7 @@
     <string name="trigonometry_description">Изучение тригонометрических функций и их свойств</string>
     <string name="trigonometry_formula">Основное тождество: sin²α + cos²α = 1\nФормулы приведения: sin(π/2 - α) = cosα</string>
     <string name="trigonometry_theory">Ключевые понятия:\n- Тригонометрические функции\n- Тригонометрические уравнения\n- Обратные функции\n- Тригонометрические неравенства\n- Комплексные числа</string>
+
+    <string name="menu_description">Open navigation menu</string>
+    <string name="topics_list_description">List of mathematics topics</string>
 </resources>
