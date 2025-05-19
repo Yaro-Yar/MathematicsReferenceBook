@@ -55,4 +55,8 @@
 
     <string name="menu_description">Open navigation menu</string>
     <string name="topics_list_description">List of mathematics topics</string>
+    <string name="formulas_title">Формулы</string>
+    <string name="theory_title">Теория</string>
+    <string name="no_formulas">Формулы отсутствуют</string>
+    <string name="no_theory">Теоретические сведения отсутствуют</string>
 </resources>

@@ -63,10 +63,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         holder.bind(topic);
 
         holder.favoriteIcon.setOnClickListener(v -> {
-            boolean newFavoriteState = !topic.isFavorite();
-            topic.setFavorite(newFavoriteState);
-            holder.updateFavoriteIcon(newFavoriteState);
             if (favoriteClickListener != null) {
+                boolean newFavoriteState = !topic.isFavorite();
                 favoriteClickListener.onFavoriteClick(topic, position, newFavoriteState);
             }
         });
@@ -88,14 +86,47 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         return new TopicsFilter();
     }
 
+    static class TopicViewHolder extends RecyclerView.ViewHolder {
+        private final TextView titleTextView;
+        private final TextView descTextView;
+        private final ImageView favoriteIcon;
+
+        TopicViewHolder(@NonNull View itemView) {
+            super(itemView);
+            titleTextView = itemView.findViewById(R.id.topicTitle);
+            descTextView = itemView.findViewById(R.id.topicDesc);
+            favoriteIcon = itemView.findViewById(R.id.favoriteIcon);
+        }
+
+        void bind(Topic topic) {
+            if (topic == null) {
+                titleTextView.setText("");
+                descTextView.setText("");
+                updateFavoriteIcon(false);
+                return;
+            }
+
+            titleTextView.setText(topic.getTitle());
+            descTextView.setText(topic.getDescription());
+            updateFavoriteIcon(topic.isFavorite());
+        }
+
+        void updateFavoriteIcon(boolean isFavorite) {
+            favoriteIcon.setImageResource(
+                    isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
+            );
+            favoriteIcon.setContentDescription(
+                    itemView.getContext().getString(
+                            isFavorite ? R.string.remove_from_favorites : R.string.add_to_favorites
+                    )
+            );
+        }
+    }
+
     private class TopicsFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Topic> filteredList = new ArrayList<>();
-
-            if (topicsFull == null) {
-                topicsFull = new ArrayList<>();
-            }
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(topicsFull);
@@ -104,13 +135,11 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
                 for (Topic topic : topicsFull) {
                     if (topic == null) continue;
 
-                    String title = String.valueOf(topic.getTitle());
-                    String desc = topic.getDescription() != null ? topic.getDescription().toLowerCase() : "";
-                    String category = topic.getCategory() != null ? topic.getCategory().toLowerCase() : "";
+                    String title = topic.getTitle().toLowerCase();
+                    String desc = topic.getDescription().toLowerCase();
+                    String category = topic.getCategory().toLowerCase();
 
-                    if (title.contains(filterPattern) ||
-                            desc.contains(filterPattern) ||
-                            category.contains(filterPattern)) {
+                    if (title.contains(filterPattern) || desc.contains(filterPattern) || category.contains(filterPattern)) {
                         filteredList.add(topic);
                     }
                 }
@@ -122,7 +151,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results.values == null) return;
 
@@ -165,38 +193,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
             Topic oldItem = oldList.get(oldItemPosition);
             Topic newItem = newList.get(newItemPosition);
             return oldItem != null && oldItem.equals(newItem);
-        }
-    }
-
-    static class TopicViewHolder extends RecyclerView.ViewHolder {
-        private final TextView titleTextView;
-        private final TextView descTextView;
-        private final ImageView favoriteIcon;
-
-        TopicViewHolder(@NonNull View itemView) {
-            super(itemView);
-            titleTextView = itemView.findViewById(R.id.topicTitle);
-            descTextView = itemView.findViewById(R.id.topicDesc);
-            favoriteIcon = itemView.findViewById(R.id.favoriteIcon);
-        }
-
-        void bind(Topic topic) {
-            if (topic == null) return;
-
-            titleTextView.setText(topic.getTitle());
-            descTextView.setText(topic.getDescription());
-            updateFavoriteIcon(topic.isFavorite());
-        }
-
-        void updateFavoriteIcon(boolean isFavorite) {
-            favoriteIcon.setImageResource(
-                    isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
-            );
-            favoriteIcon.setContentDescription(
-                    itemView.getContext().getString(
-                            isFavorite ? R.string.remove_from_favorites : R.string.add_to_favorites
-                    )
-            );
         }
     }
 }
