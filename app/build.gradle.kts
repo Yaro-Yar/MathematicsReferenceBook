@@ -71,4 +71,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     implementation (libs.core.ktx)
+    implementation (libs.room.runtime)
+    annotationProcessor (libs.room.compiler)
+    implementation (libs.room.ktx)
+    implementation (libs.lifecycle.livedata)
+    implementation (libs.annotation)
 }

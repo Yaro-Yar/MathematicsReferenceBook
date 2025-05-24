@@ -7,10 +7,12 @@ import androidx.annotation.Nullable;
 import java.util.Objects;
 
 public class Topic implements Parcelable {
+    private String userNotes;
     public static final int MIN_DIFFICULTY = 1;
     public static final int MAX_DIFFICULTY = 5;
     public static final int DEFAULT_DIFFICULTY = 1;
     private static final String DEFAULT_STRING = "";
+
 
     private final int id;
     @NonNull private final String title;
@@ -30,17 +32,6 @@ public class Topic implements Parcelable {
         this.category = ensureNotNull(builder.category, "Category");
         this.isFavorite = builder.isFavorite;
         this.difficultyLevel = validateDifficulty(builder.difficultyLevel);
-    }
-
-    protected Topic(@NonNull Parcel in) {
-        this.id = in.readInt();
-        this.title = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.description = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.formula = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.theory = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.category = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.isFavorite = in.readByte() != 0;
-        this.difficultyLevel = in.readInt();
     }
 
     @NonNull
@@ -100,9 +91,18 @@ public class Topic implements Parcelable {
             return this;
         }
 
+        public Builder userNotes(String notes) {
+            String userNotes = notes != null ? notes : "";
+            return this;
+        }
+
         public Topic build() {
             return new Topic(this);
         }
+    }
+
+    public String getUserNotes() {
+        return userNotes;
     }
 
     public Topic copyWithFavorite(boolean isFavorite) {
@@ -149,6 +149,40 @@ public class Topic implements Parcelable {
         return 0;
     }
 
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", category='" + category + '\'' +
+                ", difficulty=" + difficultyLevel +
+                ", favorite=" + isFavorite +
+                '}';
+    }
+
+
+
+    // Добавим сеттер для заметок
+    public void setUserNotes(String userNotes) {
+        this.userNotes = userNotes != null ? userNotes : "";
+    }
+
+    // Обновим конструктор из Parcel
+    protected Topic(@NonNull Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.description = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.formula = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.theory = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.category = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
+        this.isFavorite = in.readByte() != 0;
+        this.difficultyLevel = in.readInt();
+        this.userNotes = in.readString() != null ? in.readString() : "";
+    }
+
+    // Обновим метод writeToParcel
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(id);
@@ -159,8 +193,10 @@ public class Topic implements Parcelable {
         dest.writeString(category);
         dest.writeByte((byte) (isFavorite ? 1 : 0));
         dest.writeInt(difficultyLevel);
+        dest.writeString(userNotes);
     }
 
+    // Обновим equals и hashCode
     @Override
     public boolean equals(@Nullable Object obj) {
         if (this == obj) return true;
@@ -173,24 +209,13 @@ public class Topic implements Parcelable {
                 description.equals(topic.description) &&
                 formula.equals(topic.formula) &&
                 theory.equals(topic.theory) &&
-                category.equals(topic.category);
+                category.equals(topic.category) &&
+                userNotes.equals(topic.userNotes);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, title, description, formula, theory,
-                category, isFavorite, difficultyLevel);
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "Topic{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", category='" + category + '\'' +
-                ", difficulty=" + difficultyLevel +
-                ", favorite=" + isFavorite +
-                '}';
+                category, isFavorite, difficultyLevel, userNotes);
     }
 }

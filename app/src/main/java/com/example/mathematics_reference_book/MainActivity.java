@@ -14,10 +14,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mathematics_reference_book.adapters.TopicsAdapter;
+import com.example.mathematics_reference_book.data.TopicEntity;
+import com.example.mathematics_reference_book.data.TopicRepository;
+import com.example.mathematics_reference_book.data.TopicViewModel;
 import com.example.mathematics_reference_book.models.Topic;
+import com.example.mathematics_reference_book.utils.TopicConverter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +36,9 @@ public class MainActivity extends AppCompatActivity implements
     private static final String DARK_MODE_KEY = "dark_mode";
 
     private TopicsAdapter adapter;
-    private final List<Topic> allTopics = new ArrayList<>();
+    private TopicViewModel topicViewModel;
     private SharedPreferences sharedPreferences;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         initSettings();
-        initTopics();
         setupRecyclerView();
+        setupViewModel();
         handleSearchIntent(getIntent());
     }
 
@@ -52,100 +59,92 @@ public class MainActivity extends AppCompatActivity implements
         );
     }
 
-    private void initTopics() {
-        try {
-            allTopics.add(new Topic.Builder(5, "Теория вероятностей")
-                    .description("Раздел математики, изучающий случайные события и их вероятности.")
-                    .formula("Основная формула вероятности: P(A) = n(A)/n(S)\n" +
-                            "Формула полной вероятности: P(A) = Σ[P(A|Bᵢ)*P(Bᵢ)]\n" +
-                            "Формула Байеса: P(A|B) = [P(B|A)*P(A)]/P(B)\n" +
-                            "Математическое ожидание: E[X] = Σxᵢ*pᵢ")
-                    .theory("Теория вероятностей - математическая дисциплина, которая: " +
-                            "1. Изучает закономерности случайных явлений " +
-                            "2. Позволяет количественно оценивать вероятность событий " +
-                            "3. Широко применяется в статистике, физике, экономике и других науках " +
-                            "Основные понятия: " +
-                            "- Случайное событие " +
-                            "- Вероятность (от 0 до 1) " +
-                            "- Случайная величина " +
-                            "- Распределение вероятностей ")
-                    .category("Математика")
-                    .difficultyLevel(3)
-                    .build());
-
-            allTopics.add(new Topic.Builder(1, "Алгебра")
-                    .description("Раздел математики, изучающий общие свойства операций и отношений.")
-                    .formula("Квадратное уравнение: ax² + bx + c = 0\n" +
-                            "Дискриминант: D = b² - 4ac\n" +
-                            "Корни: x = (-b ± √D)/2a\n\n" +
-                            "Свойства логарифмов:\n" +
-                            "logₐ(xy) = logₐx + logₐy\n" +
-                            "logₐ(x/y) = logₐx - logₐy\n" +
-                            "logₐ(xᵇ) = b*logₐx")
-                    .theory("Алгебра включает: " +
-                            "1. Решение уравнений<br>" +
-                            "2. Работу с многочленами<br>" +
-                            "3. Изучение алгебраических структур<br><br>" +
-                            "<b>Основные темы:</b><br>" +
-                            "- Линейная алгебра<br>" +
-                            "- Абстрактная алгебра<br>" +
-                            "- Алгебраическая геометрия")
-                    .category("Математика")
-                    .difficultyLevel(3)
-                    .build());
-
-            allTopics.add(new Topic.Builder(3, "Математический анализ")
-                    .description("Раздел математики, изучающий функции, пределы, производные и интегралы.")
-                    .formula("Производные:\n" +
-                            "(xⁿ)' = nxⁿ⁻¹\n" +
-                            "(sin x)' = cos x\n" +
-                            "(eˣ)' = eˣ\n\n" +
-                            "Интегралы:\n" +
-                            "∫xⁿdx = xⁿ⁺¹/(n+1) + C (n ≠ -1)\n" +
-                            "∫(1/x)dx = ln|x| + C")
-                    .theory("Основные понятия анализа:\n" +
-                            "1. Пределы и непрерывность\n" +
-                            "2. Дифференциальное исчисление\n" +
-                            "3. Интегральное исчисление\n\n" +
-                            "Приложения:\n" +
-                            "- Оптимизация\n" +
-                            "- Физические модели\n" +
-                            "- Экономические расчеты")
-                    .category("Высшая математика")
-                    .difficultyLevel(4)
-                    .build());
-
-            allTopics.add(new Topic.Builder(2, "Геометрия")
-                    .description("Раздел математики, изучающий пространственные отношения и формы.")
-                    .formula("Планиметрия:\n" +
-                            "Площадь круга: S = πr²\n" +
-                            "Теорема Пифагора: a² + b² = c²\n\n" +
-                            "Стереометрия:\n" +
-                            "Объем шара: V = (4/3)πr³\n" +
-                            "Площадь сферы: S = 4πr²")
-                    .theory("Основные разделы геометрии:\n" +
-                            "1. Планиметрия (2D)\n" +
-                            "2. Стереометрия (3D)\n" +
-                            "3. Аналитическая геометрия\n\n" +
-                            "Важные понятия:\n" +
-                            "- Точки, линии, плоскости\n" +
-                            "- Углы и расстояния\n" +
-                            "- Геометрические преобразования")
-                    .category("Математика")
-                    .difficultyLevel(2)
-                    .build());
-
-        } catch (Exception e) {
-            Log.e(TAG, "Topic initialization failed", e);
-            Toast.makeText(this, "Error loading topics", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.topicsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TopicsAdapter(allTopics, this, this);
+        adapter = new TopicsAdapter(new ArrayList<>(), this, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setupViewModel() {
+        topicViewModel = new ViewModelProvider(this).get(TopicViewModel.class);
+
+        // Наблюдаем за всеми темами
+        topicViewModel.getAllTopics().observe(this, topicEntities -> {
+            if (topicEntities != null && !topicEntities.isEmpty()) {
+                List<Topic> topics = convertToTopics(topicEntities);
+                adapter.updateTopics(topics);
+            } else {
+                initializeDefaultTopics();
+            }
+        });
+
+        // Наблюдаем за LiveData<List<TopicEntity>> из ViewModel
+        topicViewModel.getAllTopics().observe(this, topicEntities -> {
+            // Конвертируем TopicEntity → Topic и обновляем адаптер
+            List<Topic> topics = TopicConverter.fromEntityList(topicEntities);
+            adapter.updateTopics(topics); // UI автоматически обновится
+        });
+
+        topicViewModel = new ViewModelProvider(this).get(TopicViewModel.class);
+
+
+        // Обработка поиска
+        topicViewModel.getSearchResults().observe(this, topicEntities -> {
+            List<Topic> topics = convertToTopics(topicEntities);
+            adapter.updateTopics(topics);
+        });
+    }
+
+
+
+    private List<Topic> convertToTopics(List<TopicEntity> entities) {
+        List<Topic> topics = new ArrayList<>();
+        for (TopicEntity entity : entities) {
+            topics.add(new Topic.Builder(entity.getId(), entity.getTitle())
+                    .description(entity.getDescription())
+                    .formula(entity.getFormula())
+                    .theory(entity.getTheory())
+                    .category(entity.getCategory())
+                    .difficultyLevel(entity.getDifficultyLevel())
+                    .isFavorite(entity.isFavorite())
+                    .build());
+        }
+        return topics;
+    }
+
+    private void initializeDefaultTopics() {
+        List<TopicEntity> defaultTopics = new ArrayList<>();
+
+        defaultTopics.add(new TopicEntity(
+                5, getString(R.string.probability_title),
+                getString(R.string.probability_description),
+                getString(R.string.probability_formula),
+                getString(R.string.probability_theory),
+                "Математика", false, 3, ""));
+
+        defaultTopics.add(new TopicEntity(
+                1, getString(R.string.algebra_title),
+                getString(R.string.algebra_description),
+                getString(R.string.algebra_formula),
+                getString(R.string.algebra_theory),
+                "Математика", false, 3, ""));
+
+        defaultTopics.add(new TopicEntity(
+                3, getString(R.string.calculus_title),
+                getString(R.string.calculus_description),
+                getString(R.string.calculus_formula),
+                getString(R.string.calculus_theory),
+                "Высшая математика", false, 4, ""));
+
+        defaultTopics.add(new TopicEntity(
+                2, getString(R.string.geometry_title),
+                getString(R.string.geometry_description),
+                getString(R.string.geometry_formula),
+                getString(R.string.geometry_theory),
+                "Математика", false, 2, ""));
+
+        topicViewModel.insertTopics(defaultTopics);
     }
 
     @Override
@@ -171,9 +170,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setupSearchView(Menu menu) {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 
-        assert searchView != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(
                 new ComponentName(this, MainActivity.class)));
 
@@ -193,9 +191,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private void filterTopics(String query) {
         if (query == null || query.isEmpty()) {
-            adapter.updateTopics(new ArrayList<>(allTopics));
+            topicViewModel.loadAllTopics();
         } else {
-            adapter.getFilter().filter(query.toLowerCase().trim());
+            topicViewModel.searchTopics(query);
         }
     }
 
@@ -233,10 +231,18 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFavoriteClick(Topic topic, int position, boolean isFavorite) {
-        topic.setFavorite(isFavorite);
+        topicViewModel.updateFavoriteStatus(topic.getId(), isFavorite);
         Toast.makeText(this,
                 isFavorite ? R.string.add_to_favorites : R.string.remove_from_favorites,
                 Toast.LENGTH_SHORT).show();
-        adapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
     }
 }

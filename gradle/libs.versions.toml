@@ -2,6 +2,7 @@
 agp = "8.9.2"
 androidxAppcompat = "1.6.1"
 androidxJunit = "1.1.5"
+annotation = "1.9.1"
 appcompatResources = "1.7.0"
 appcompatVersion = "5.0.0"
 appsearch = "1.0.0"
@@ -20,6 +21,7 @@ materialVersion = "1.13.0-alpha13"
 roomRuntime = "2.7.1"
 
 [libraries]
+annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
 appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "appcompatVersion" }
 appcompat-resources-v170 = { module = "androidx.appcompat:appcompat-resources", version.ref = "appcompatResources" }
 appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
@@ -35,11 +37,14 @@ ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitV
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 junit-v115 = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycleViewmodelKtx" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 material-v1130alpha13 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 
 [plugins]

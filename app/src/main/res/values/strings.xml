@@ -1,11 +1,16 @@
 <resources>
     <!-- Application Strings -->
     <string name="app_name">Math:God Mode</string>
-
     <string name="settings">Настройки</string>
+
+    <string name="notes_label">Заметки:</string>
+    <string name="notes">Заметки</string>
+    <string name="edit_notes">Редактировать заметки</string>
 
     <!-- Navigation & UI -->
     <string name="favorite">Избранное</string>
+    <string name="menu_description">Открыть меню навигации</string>
+    <string name="topics_list_description">Список математических тем</string>
 
     <!-- Search Functionality -->
     <string name="search_hint">Поиск математических тем</string>
@@ -29,11 +34,16 @@
     <string name="action_save">Сохранить</string>
     <string name="action_cancel">Отмена</string>
     <string name="action_share">Поделиться</string>
-
     <string name="add_to_favorites">Добавить в избранное</string>
     <string name="remove_from_favorites">Удалить из избранного</string>
-
     <string name="topic_details">Описание темы</string>
+
+    <!-- Topic Content -->
+    <string name="formulas_title">Формулы</string>
+    <string name="theory_title">Теория</string>
+    <string name="no_formulas">Формулы отсутствуют</string>
+    <string name="no_theory">Теоретические сведения отсутствуют</string>
+    <string name="formulas_label">Формулы:</string>
 
     <!-- Алгебра -->
     <string name="algebra_title">Алгебра</string>
@@ -53,10 +63,15 @@
     <string name="trigonometry_formula">Основное тождество: sin²α + cos²α = 1\nФормулы приведения: sin(π/2 - α) = cosα</string>
     <string name="trigonometry_theory">Ключевые понятия:\n- Тригонометрические функции\n- Тригонометрические уравнения\n- Обратные функции\n- Тригонометрические неравенства\n- Комплексные числа</string>
 
-    <string name="menu_description">Open navigation menu</string>
-    <string name="topics_list_description">List of mathematics topics</string>
-    <string name="formulas_title">Формулы</string>
-    <string name="theory_title">Теория</string>
-    <string name="no_formulas">Формулы отсутствуют</string>
-    <string name="no_theory">Теоретические сведения отсутствуют</string>
+    <!-- Теория вероятностей -->
+    <string name="probability_title">Теория вероятностей</string>
+    <string name="probability_description">Раздел математики, изучающий случайные события и их вероятности.</string>
+    <string name="probability_formula">Основная формула вероятности: P(A) = n(A)/n(S)\nФормула полной вероятности: P(A) = Σ[P(A|Bᵢ)*P(Bᵢ)]\nФормула Байеса: P(A|B) = [P(B|A)*P(A)]/P(B)\nМатематическое ожидание: E[X] = Σxᵢ*pᵢ</string>
+    <string name="probability_theory">Теория вероятностей - математическая дисциплина, которая: \n1. Изучает закономерности случайных явлений \n2. Позволяет количественно оценивать вероятность событий \n3. Широко применяется в статистике, физике, экономике и других науках \nОсновные понятия: \n• Случайное событие \n• Вероятность (от 0 до 1) \n• Случайная величина \n• Распределение вероятностей</string>
+
+    <!-- Математический анализ -->
+    <string name="calculus_title">Математический анализ</string>
+    <string name="calculus_description">Раздел математики, изучающий функции, пределы, производные и интегралы.</string>
+    <string name="calculus_formula">Производные:\n(xⁿ)\' = nxⁿ⁻¹\n(sin x)\' = cos x\n(eˣ)\' = eˣ\n\nИнтегралы:\n∫xⁿdx = xⁿ⁺¹/(n+1) + C (n ≠ -1)\n∫(1/x)dx = ln|x| + C</string>
+    <string name="calculus_theory">Основные понятия анализа:\n1. Пределы и непрерывность\n2. Дифференциальное исчисление\n3. Интегральное исчисление\n\nПриложения:\n- Оптимизация\n- Физические модели\n- Экономические расчеты</string>
 </resources>
