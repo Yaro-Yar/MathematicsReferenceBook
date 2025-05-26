@@ -2,6 +2,7 @@
     <!-- Application Strings -->
     <string name="app_name">Math:God Mode</string>
     <string name="settings">Настройки</string>
+    <string name="favorite_update_error">Не удалось обновить избранное</string>
 
     <string name="notes_label">Заметки:</string>
     <string name="notes">Заметки</string>

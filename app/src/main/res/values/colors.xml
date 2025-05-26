@@ -52,4 +52,8 @@
 
     <color name="icon_tint">#6200EE</color> <!-- Фиксированный цвет -->
     <color name="icon_tint_dark">#BB86FC</color>
+    <color name="quantum_void">#FF0A1128</color>
+    <color name="hyper_blue">#FF4FC3F7</color>
+    <color name="singularity_purple">#FFD500F9</color>
+    <color name="quantum_dot">#FFEB3B</color>
 </resources>
