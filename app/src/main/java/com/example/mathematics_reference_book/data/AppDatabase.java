@@ -19,11 +19,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    // Миграция с версии 2 на 3 (переименование isFavorite в is_favorite)
     static final Migration MIGRATION_2_3 = new Migration(2, 3) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // 1. Создаем новую таблицу с правильными именами столбцов
             database.execSQL("CREATE TABLE IF NOT EXISTS topics_new (" +
                     "id INTEGER PRIMARY KEY NOT NULL, " +
                     "title TEXT NOT NULL, " +
@@ -35,21 +33,16 @@ public abstract class AppDatabase extends RoomDatabase {
                     "difficulty_level INTEGER NOT NULL, " +
                     "user_notes TEXT)");
 
-            // 2. Копируем данные из старой таблицы
             database.execSQL("INSERT INTO topics_new (id, title, description, formula, " +
                     "theory, category, is_favorite, difficulty_level, user_notes) " +
                     "SELECT id, title, description, formula, theory, category, " +
                     "isFavorite, difficultyLevel, user_notes FROM topics");
 
-            // 3. Удаляем старую таблицу
             database.execSQL("DROP TABLE topics");
-
-            // 4. Переименовываем новую таблицу
             database.execSQL("ALTER TABLE topics_new RENAME TO topics");
         }
     };
 
-    // Миграция с версии 1 на 2 (добавление user_notes)
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
@@ -66,7 +59,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class,
                                     "math_topics.db")
                             .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                            .fallbackToDestructiveMigrationOnDowngrade()
+                            .fallbackToDestructiveMigration() // Изменено с deprecated метода
                             .build();
                 }
             }

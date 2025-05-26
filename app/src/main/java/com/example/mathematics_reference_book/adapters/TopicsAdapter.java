@@ -14,6 +14,7 @@ import com.example.mathematics_reference_book.R;
 import com.example.mathematics_reference_book.models.Topic;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewHolder> implements Filterable {
     private List<Topic> topics;
@@ -29,7 +30,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         void onFavoriteClick(Topic topic, int position, boolean isFavorite);
     }
 
-    public TopicsAdapter(List<Topic> topics, OnItemClickListener itemListener, OnFavoriteClickListener favoriteListener) {
+    public TopicsAdapter(List<Topic> topics, OnItemClickListener itemListener,
+                         OnFavoriteClickListener favoriteListener) {
         this.topics = topics != null ? new ArrayList<>(topics) : new ArrayList<>();
         this.topicsFull = new ArrayList<>(this.topics);
         this.itemClickListener = itemListener;
@@ -41,7 +43,9 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
             newTopics = new ArrayList<>();
         }
 
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new TopicDiffCallback(this.topics, newTopics));
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new TopicDiffCallback(this.topics, newTopics)
+        );
         this.topics = new ArrayList<>(newTopics);
         this.topicsFull = new ArrayList<>(newTopics);
         diffResult.dispatchUpdatesTo(this);
@@ -63,22 +67,30 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         holder.bind(topic);
 
         holder.favoriteIcon.setOnClickListener(v -> {
-            if (favoriteClickListener != null) {
-                boolean newFavoriteState = !topic.isFavorite();
-                favoriteClickListener.onFavoriteClick(topic, position, newFavoriteState);
+            int adapterPosition = holder.getAdapterPosition();
+            if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < topics.size()) {
+                Topic currentTopic = topics.get(adapterPosition);
+                if (favoriteClickListener != null) {
+                    boolean newFavoriteState = !currentTopic.isFavorite();
+                    favoriteClickListener.onFavoriteClick(currentTopic, adapterPosition, newFavoriteState);
+                }
             }
         });
 
         holder.itemView.setOnClickListener(v -> {
-            if (itemClickListener != null) {
-                itemClickListener.onItemClick(topic, position);
+            int adapterPosition = holder.getAdapterPosition();
+            if (adapterPosition != RecyclerView.NO_POSITION && adapterPosition < topics.size()) {
+                Topic currentTopic = topics.get(adapterPosition);
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(currentTopic, adapterPosition);
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return topics != null ? topics.size() : 0;
+        return topics.size();
     }
 
     @Override
@@ -99,26 +111,10 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
         }
 
         void bind(Topic topic) {
-            if (topic == null) {
-                titleTextView.setText("");
-                descTextView.setText("");
-                updateFavoriteIcon(false);
-                return;
-            }
-
             titleTextView.setText(topic.getTitle());
             descTextView.setText(topic.getDescription());
-            updateFavoriteIcon(topic.isFavorite());
-        }
-
-        void updateFavoriteIcon(boolean isFavorite) {
             favoriteIcon.setImageResource(
-                    isFavorite ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
-            );
-            favoriteIcon.setContentDescription(
-                    itemView.getContext().getString(
-                            isFavorite ? R.string.remove_from_favorites : R.string.add_to_favorites
-                    )
+                    topic.isFavorite() ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite_border
             );
         }
     }
@@ -133,13 +129,10 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (Topic topic : topicsFull) {
-                    if (topic == null) continue;
-
-                    String title = topic.getTitle().toLowerCase();
-                    String desc = topic.getDescription().toLowerCase();
-                    String category = topic.getCategory().toLowerCase();
-
-                    if (title.contains(filterPattern) || desc.contains(filterPattern) || category.contains(filterPattern)) {
+                    if (topic != null &&
+                            (topic.getTitle().toLowerCase().contains(filterPattern) ||
+                                    topic.getDescription().toLowerCase().contains(filterPattern) ||
+                                    topic.getCategory().toLowerCase().contains(filterPattern))) {
                         filteredList.add(topic);
                     }
                 }
@@ -147,15 +140,17 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicViewH
 
             FilterResults results = new FilterResults();
             results.values = filteredList;
+            results.count = filteredList.size();
             return results;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results.values == null) return;
-
             List<Topic> filteredList = (List<Topic>) results.values;
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new TopicDiffCallback(topics, filteredList));
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                    new TopicDiffCallback(topics, filteredList)
+            );
             topics.clear();
             topics.addAll(filteredList);
             diffResult.dispatchUpdatesTo(TopicsAdapter.this);

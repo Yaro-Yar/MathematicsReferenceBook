@@ -11,6 +11,9 @@ import java.util.List;
 @Dao
 public interface TopicDao {
 
+    @Query("UPDATE topics SET is_favorite = :isFavorite WHERE id = :id")
+    void updateFavoriteStatus(int id, boolean isFavorite);
+
     @Query("SELECT * FROM topics")
     LiveData<List<TopicEntity>> getAllTopics();
 
@@ -24,11 +27,6 @@ public interface TopicDao {
     @Query("SELECT * FROM topics WHERE is_favorite = 1") // Исправлено на is_favorite
     LiveData<List<TopicEntity>> getFavoriteTopics();
 
-    @Query("SELECT * FROM topics WHERE title LIKE :query OR description LIKE :query OR category LIKE :query")
+    @Query("SELECT * FROM topics WHERE title LIKE :query OR description LIKE :query OR category LIKE :query COLLATE NOCASE")
     LiveData<List<TopicEntity>> searchTopics(String query);
-
-    @Query("UPDATE topics SET is_favorite = :isFavorite WHERE id = :id") // Исправлено
-    void updateFavoriteStatus(int id, boolean isFavorite);
-
-
 }

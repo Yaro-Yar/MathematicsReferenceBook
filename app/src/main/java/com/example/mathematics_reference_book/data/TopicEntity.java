@@ -18,6 +18,9 @@ public class TopicEntity {
     @ColumnInfo(name = "description")
     private String description;
 
+    @ColumnInfo(name = "is_favorite")
+    private boolean isFavorite;
+
     @NonNull
     @ColumnInfo(name = "formula")
     private String formula;
@@ -30,8 +33,6 @@ public class TopicEntity {
     @ColumnInfo(name = "category")
     private String category;
 
-    @ColumnInfo(name = "is_favorite")
-    private boolean isFavorite;
 
     @ColumnInfo(name = "difficulty_level")
     private int difficultyLevel;

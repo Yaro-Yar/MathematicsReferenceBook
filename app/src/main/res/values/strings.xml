@@ -30,6 +30,7 @@
     <string name="geometry_category">Геометрия</string>
     <string name="calculus_category">Математический анализ</string>
     <string name="statistics_category">Теория вероятностей</string>
+    <string name="trigonometry_category">Тригонометрия</string>
 
     <!-- Common Actions -->
     <string name="action_save">Сохранить</string>
@@ -46,33 +47,33 @@
     <string name="no_theory">Теоретические сведения отсутствуют</string>
     <string name="formulas_label">Формулы:</string>
 
-    <!-- Алгебра -->
-    <string name="algebra_title">Алгебра</string>
-    <string name="algebra_description">Раздел математики, изучающий операции и их свойства</string>
-    <string name="algebra_formula">a² - b² = (a - b)(a + b)\nКвадратное уравнение: ax² + bx + c = 0</string>
-    <string name="algebra_theory">Основные темы:\n- Линейные уравнения\n- Квадратные уравнения\n- Многочлены\n- Системы уравнений\n- Матрицы и определители</string>
-
-    <!-- Геометрия -->
-    <string name="geometry_title">Геометрия</string>
-    <string name="geometry_description">Изучение пространственных отношений и фигур</string>
-    <string name="geometry_formula">Площадь круга: S = πr²\nТеорема Пифагора: a² + b² = c²</string>
-    <string name="geometry_theory">Основные разделы:\n- Планиметрия\n- Стереометрия\n- Тригонометрия\n- Аналитическая геометрия\n- Векторная алгебра</string>
-
-    <!-- Тригонометрия -->
-    <string name="trigonometry_title">Тригонометрия</string>
-    <string name="trigonometry_description">Изучение тригонометрических функций и их свойств</string>
-    <string name="trigonometry_formula">Основное тождество: sin²α + cos²α = 1\nФормулы приведения: sin(π/2 - α) = cosα</string>
-    <string name="trigonometry_theory">Ключевые понятия:\n- Тригонометрические функции\n- Тригонометрические уравнения\n- Обратные функции\n- Тригонометрические неравенства\n- Комплексные числа</string>
-
-    <!-- Теория вероятностей -->
-    <string name="probability_title">Теория вероятностей</string>
-    <string name="probability_description">Раздел математики, изучающий случайные события и их вероятности.</string>
-    <string name="probability_formula">Основная формула вероятности: P(A) = n(A)/n(S)\nФормула полной вероятности: P(A) = Σ[P(A|Bᵢ)*P(Bᵢ)]\nФормула Байеса: P(A|B) = [P(B|A)*P(A)]/P(B)\nМатематическое ожидание: E[X] = Σxᵢ*pᵢ</string>
-    <string name="probability_theory">Теория вероятностей - математическая дисциплина, которая: \n1. Изучает закономерности случайных явлений \n2. Позволяет количественно оценивать вероятность событий \n3. Широко применяется в статистике, физике, экономике и других науках \nОсновные понятия: \n• Случайное событие \n• Вероятность (от 0 до 1) \n• Случайная величина \n• Распределение вероятностей</string>
-
     <!-- Математический анализ -->
     <string name="calculus_title">Математический анализ</string>
     <string name="calculus_description">Раздел математики, изучающий функции, пределы, производные и интегралы.</string>
     <string name="calculus_formula">Производные:\n(xⁿ)\' = nxⁿ⁻¹\n(sin x)\' = cos x\n(eˣ)\' = eˣ\n\nИнтегралы:\n∫xⁿdx = xⁿ⁺¹/(n+1) + C (n ≠ -1)\n∫(1/x)dx = ln|x| + C</string>
     <string name="calculus_theory">Основные понятия анализа:\n1. Пределы и непрерывность\n2. Дифференциальное исчисление\n3. Интегральное исчисление\n\nПриложения:\n- Оптимизация\n- Физические модели\n- Экономические расчеты</string>
+
+    <!-- Теория вероятностей -->
+    <string name="probability_title">Теория вероятностей</string>
+    <string name="probability_description">Раздел математики, изучающий случайные события, их вероятности и закономерности.</string>
+    <string name="probability_formula">Формулы:\nP(A) = m/n (классическая вероятность)\nP(A∪B) = P(A) + P(B) - P(A∩B)\nP(A|B) = P(A∩B)/P(B) (условная вероятность)\n\nРаспределения:\nБиномиальное: P(k) = C(n,k)pᵏ(1-p)ⁿ⁻�</string>
+    <string name="probability_theory">Основные понятия:\n1. Случайные события\n2. Вероятностные пространства\n3. Случайные величины\n\nПриложения:\n- Статистика\n- Финансовые риски\n- Машинное обучение</string>
+
+    <!-- Тригонометрия -->
+    <string name="trigonometry_title">Тригонометрия</string>
+    <string name="trigonometry_description">Раздел математики, изучающий соотношения между сторонами и углами треугольников.</string>
+    <string name="trigonometry_formula">Основные тождества:\nsin²α + cos²α = 1\ntanα = sinα/cosα\n\nФормулы сложения:\nsin(α±β) = sinαcosβ ± cosαsinβ\ncos(α±β) = cosαcosβ ∓ sinαsinβ</string>
+    <string name="trigonometry_theory">Основные темы:\n1. Тригонометрические функции\n2. Тригонометрические уравнения\n3. Преобразование выражений\n\nПриложения:\n- Физика (волны, колебания)\n- Навигация\n- Компьютерная графика</string>
+
+    <!-- Геометрия -->
+    <string name="geometry_title">Геометрия</string>
+    <string name="geometry_description">Раздел математики, изучающий пространственные отношения и формы объектов.</string>
+    <string name="geometry_formula">Площади и объемы:\nКвадрат: S = a²\nТреугольник: S = ½bh\nОкружность: S = πr²\n\nТеоремы:\nПифагора: c² = a² + b²\nКосинусов: c² = a² + b² - 2ab·cosγ</string>
+    <string name="geometry_theory">Основные разделы:\n1. Планиметрия\n2. Стереометрия\n3. Аналитическая геометрия\n\nПриложения:\n- Архитектура\n- Инженерное дело\n- Компьютерная графика</string>
+
+    <!-- Алгебра -->
+    <string name="algebra_title">Алгебра</string>
+    <string name="algebra_description">Раздел математики, изучающий алгебраические структуры, уравнения и операции.</string>
+    <string name="algebra_formula">Формулы:\n(a + b)² = a² + 2ab + b²\nКвадратное уравнение: ax² + bx + c = 0\nD = b² - 4ac\nx = (-b ± √D)/2a\n\nЛогарифмы:\nlogₐ(xy) = logₐx + logₐy</string>
+    <string name="algebra_theory">Основные темы:\n1. Линейные уравнения\n2. Многочлены\n3. Системы уравнений\n\nПриложения:\n- Криптография\n- Экономическое моделирование\n- Теория алгоритмов</string>
 </resources>

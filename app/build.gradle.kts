@@ -59,12 +59,10 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.core.ktx)
-    implementation(libs.appcompat)
 
     androidTestImplementation(libs.junit.v115)
 
     implementation(libs.core.ktx.v1120)
-    implementation(libs.appcompat)
     implementation(libs.material)
 
     // Убедитесь, что все версии существуют
@@ -76,4 +74,8 @@ dependencies {
     implementation (libs.room.ktx)
     implementation (libs.lifecycle.livedata)
     implementation (libs.annotation)
+
+    implementation (libs.activity.v160)
+    implementation (libs.fragment)
+    implementation (libs.appcompat)
 }

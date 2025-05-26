@@ -50,7 +50,9 @@ public class TopicConverter {
         List<Topic> topics = new ArrayList<>();
         if (entities != null) {
             for (TopicEntity entity : entities) {
-                topics.add(fromEntity(entity));
+                if (entity != null) {
+                    topics.add(fromEntity(entity));
+                }
             }
         }
         return topics;

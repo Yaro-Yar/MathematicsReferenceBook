@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_notes"
-        android:icon="@drawable/ic_notes"
-        android:title="@string/notes"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/action_edit_notes"
         android:icon="@drawable/ic_edit"
         android:title="@string/edit_notes"

@@ -18,6 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.example.mathematics_reference_book.data.TopicRepository;
 import com.example.mathematics_reference_book.models.Topic;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TopicActivity extends AppCompatActivity {
     public static final String EXTRA_TOPIC = "topic";
@@ -28,9 +33,24 @@ public class TopicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
 
-        initActionBar();
-        initTopicData();
-        initViews();
+        // Проверка на null и обработка Intent
+        if (getIntent() == null || !getIntent().hasExtra(EXTRA_TOPIC)) {
+            Toast.makeText(this, "Ошибка: данные темы не получены", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        try {
+            currentTopic = getIntent().getParcelableExtra(EXTRA_TOPIC);
+            if (currentTopic == null) {
+                throw new NullPointerException("Topic object is null");
+            }
+            initViews();
+        } catch (Exception e) {
+            Log.e("TopicActivity", "Error initializing", e);
+            Toast.makeText(this, "Ошибка загрузки темы", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void initActionBar() {

@@ -116,18 +116,6 @@ public class Topic implements Parcelable {
                 .build();
     }
 
-    public static final Creator<Topic> CREATOR = new Creator<>() {
-        @Override
-        public Topic createFromParcel(Parcel in) {
-            return new Topic(in);
-        }
-
-        @Override
-        public Topic[] newArray(int size) {
-            return new Topic[size];
-        }
-    };
-
     // Getters
     public int getId() { return id; }
     @NonNull public String getDescription() { return description; }
@@ -169,22 +157,20 @@ public class Topic implements Parcelable {
         this.userNotes = userNotes != null ? userNotes : "";
     }
 
-    // Обновим конструктор из Parcel
-    protected Topic(@NonNull Parcel in) {
-        this.id = in.readInt();
-        this.title = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.description = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.formula = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.theory = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.category = in.readString() != null ? Objects.requireNonNull(in.readString()) : DEFAULT_STRING;
-        this.isFavorite = in.readByte() != 0;
-        this.difficultyLevel = in.readInt();
-        this.userNotes = in.readString() != null ? in.readString() : "";
+    protected Topic(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        formula = in.readString();
+        theory = in.readString();
+        category = in.readString();
+        isFavorite = in.readByte() != 0;
+        difficultyLevel = in.readInt();
+        userNotes = in.readString();
     }
 
-    // Обновим метод writeToParcel
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(description);
@@ -196,21 +182,34 @@ public class Topic implements Parcelable {
         dest.writeString(userNotes);
     }
 
-    // Обновим equals и hashCode
+    public static final Creator<Topic> CREATOR = new Creator<Topic>() {
+        @Override
+        public Topic createFromParcel(Parcel in) {
+            return new Topic(in);
+        }
+
+        @Override
+        public Topic[] newArray(int size) {
+            return new Topic[size];
+        }
+    };
+
     @Override
-    public boolean equals(@Nullable Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Topic topic = (Topic) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Topic topic = (Topic) o;
+
+        // Добавляем проверки на null для всех строковых полей
         return id == topic.id &&
                 isFavorite == topic.isFavorite &&
                 difficultyLevel == topic.difficultyLevel &&
-                title.equals(topic.title) &&
-                description.equals(topic.description) &&
-                formula.equals(topic.formula) &&
-                theory.equals(topic.theory) &&
-                category.equals(topic.category) &&
-                userNotes.equals(topic.userNotes);
+                Objects.equals(title, topic.title) &&
+                Objects.equals(description, topic.description) &&
+                Objects.equals(formula, topic.formula) &&
+                Objects.equals(theory, topic.theory) &&
+                Objects.equals(category, topic.category) &&
+                Objects.equals(userNotes, topic.userNotes);
     }
 
     @Override
